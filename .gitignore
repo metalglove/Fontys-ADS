@@ -1,0 +1,4 @@
+*/logs/*
+*/checkpoints/*
+*/weights/*
+*/__pycache__/*
