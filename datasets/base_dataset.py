@@ -2,9 +2,10 @@ import tensorflow as tf
 from abc import ABC, abstractmethod
 
 class DatasetBase(ABC):
-    def split_data_to_train_val_test(self, data, train_percentage, validation_percentage, test_percentage):
+    def split_data_to_train_val_test(self, data, train_percentage, validation_percentage, test_percentage, data_size=-1):
         # size of the data
-        data_size = tf.data.experimental.cardinality(data).numpy()
+        if data_size == -1:
+            data_size = tf.data.experimental.cardinality(data).numpy()
 
         # prepares train, validation, and test sizes
         self.train_size = int(train_percentage * data_size)
