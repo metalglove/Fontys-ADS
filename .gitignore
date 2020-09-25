@@ -1,5 +1,6 @@
-*/logs/*
-*/checkpoints/*
-*/weights/*
-*/__pycache__/*
-DV/datasets/profiles.csv
+**/logs/*
+**/checkpoints/*
+**/.ipynb_checkpoints/*
+**/weights/*
+**/__pycache__/*
+**/DV/datasets/profiles.csv
