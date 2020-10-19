@@ -5,3 +5,4 @@
 **/__pycache__/*
 **/DV/datasets/profiles.csv
 Assignments/CNN/models/*
+Assignments/RL/gym-2048
