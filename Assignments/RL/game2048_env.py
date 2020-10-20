@@ -53,7 +53,8 @@ class Game2048Env(gym.Env):
         self.action_space = spaces.Discrete(4)
         # Suppose that the maximum tile is as if you have powers of 2 across the board.
         # layers = self.squares
-        self.observation_space = spaces.Box(0, 1, (self.w, self.h), dtype=np.int)
+        # self.observation_space = spaces.Box(0, 1, (self.w, self.h), dtype=np.int)
+        self.observation_space = spaces.Box(0, 2**self.squares, (self.w, self.h, 16), dtype=np.int)
         self.set_illegal_move_reward(0.)
         self.set_max_tile(None)
 
@@ -87,7 +88,6 @@ class Game2048Env(gym.Env):
     # Implement gym interface
     def step(self, action):
         """Perform one step of the game. This involves moving and adding a new tile."""
-        logging.debug("Action {}".format(action))
         score = 0
         done = None
         info = {
@@ -101,10 +101,10 @@ class Game2048Env(gym.Env):
             done = self.isend()
             reward = float(score)
         except IllegalMove:
-            logging.debug("Illegal move")
             info['illegal_move'] = True
             # done = self.isend()
-            done = True
+            # done = True
+            done = False
             reward = self.illegal_move_reward
 
         #print("Am I done? {}".format(done))
@@ -112,20 +112,23 @@ class Game2048Env(gym.Env):
 
         # Return observation (board state), reward, done and info dict
         # return stack(self.Matrix), reward, done, info
-        return np.expand_dims(self.Matrix.flatten(), 0), reward, done, info
+        return np.expand_dims(stack(self.Matrix), 0), reward, done, info
+        # return np.expand_dims(self.render('rgb_array'), 0), reward, done, info
+        # return np.expand_dims(self.Matrix.flatten(), 0), reward, done, info
+        # return self.Matrix.flatten(), reward, done, info
         # return self.Matrix, reward, done, info
 
     def reset(self):
         self.Matrix = np.zeros((self.h, self.w), np.int)
         self.score = 0
 
-        logging.debug("Adding tiles")
         self.add_tile()
         self.add_tile()
 
-        # return stack(self.Matrix)
-        obs = np.expand_dims(self.Matrix.flatten(), 0)
-        return obs
+        return np.expand_dims(stack(self.Matrix), 0)
+        # obs = np.expand_dims(self.render('rgb_array'), 0)
+        # obs = np.expand_dims(self.Matrix.flatten(), 0)
+        # return self.Matrix.flatten()
         # return self.Matrix
 
     def render(self, mode='human'):
@@ -186,7 +189,6 @@ class Game2048Env(gym.Env):
         assert empties.shape[0]
         empty_idx = self.np_random.choice(empties.shape[0])
         empty = empties[empty_idx]
-        logging.debug("Adding %s at %s", val, (empty[0], empty[1]))
         self.set(empty[0], empty[1], val)
 
     def get(self, x, y):
@@ -209,15 +211,6 @@ class Game2048Env(gym.Env):
         """Perform one move of the game. Shift things to one side then,
         combine. directions 0, 1, 2, 3 are up, right, down, left.
         Returns the score that [would have] got."""
-        if not trial:
-            if direction == 0:
-                logging.debug("Up")
-            elif direction == 1:
-                logging.debug("Right")
-            elif direction == 2:
-                logging.debug("Down")
-            elif direction == 3:
-                logging.debug("Left")
 
         changed = False
         move_score = 0
