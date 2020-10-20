@@ -224,8 +224,6 @@ class WorkerAgent(Thread):
                     state_batch = []
                     action_batch = []
                     reward_batch = []
-                    td_target_batch = []
-                    advatnage_batch = []
 
                 episode_reward += reward[0][0]
                 state = next_state[0]

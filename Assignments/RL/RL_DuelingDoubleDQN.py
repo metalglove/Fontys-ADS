@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense, Add, Flatten
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers.experimental.preprocessing import Normalization
-# from processors2048 import OneHotNNInputProcessor
+
 import os
 import game2048_env
 import gym
