@@ -6,3 +6,4 @@
 **/DV/datasets/profiles.csv
 Assignments/CNN/models/*
 Assignments/RL/gym-2048
+.env
