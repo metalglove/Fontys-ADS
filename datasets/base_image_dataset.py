@@ -8,9 +8,12 @@ class ImageDatasetBase(DatasetBase):
         self.img_height = img_height
         self.batch_size = batch_size
 
-    def decode_img(self, image_string, channels, augment=False):
+    def decode_img(self, image_string, channels, augment=False, is_png=True):
         # convert the compressed string to a 3D uint8 tensor
-        img = tf.image.decode_png(image_string, channels=channels)
+        if is_png:
+            img = tf.image.decode_png(image_string, channels=channels)
+        else:
+            img = tf.image.decode_jpeg(image_string, channels=channels)
         # augment the image
         if augment:
             img = self.apply_img_augmentation(img)

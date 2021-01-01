@@ -7,3 +7,4 @@
 Assignments/CNN/models/*
 Assignments/RL/gym-2048
 .env
+data
